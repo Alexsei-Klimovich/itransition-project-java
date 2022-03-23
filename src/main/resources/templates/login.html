@@ -1,0 +1,28 @@
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <title>Login</title>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div th:insert="fragments/header :: header">...</div>
+<div class="container my-3">
+    <div class="container px-4 w-25">
+        <div class="container">
+            <h1 align="center">Login with</h1>
+            <a class="btn btn-secondary btn-lg btn-block" role="button" th:href="@{/oauth2/authorization/google}">GOOGLE</a>
+            <a class="btn btn-secondary btn-lg btn-block" role="button" th:href="@{/oauth2/authorization/facebook}">FACEBOOK</a>
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer :: footer">...</div>
+</body>
+</html>
+
+
+
