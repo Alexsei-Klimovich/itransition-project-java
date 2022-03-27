@@ -4,30 +4,27 @@ import com.alexsei.itransition.model.Image;
 import com.alexsei.itransition.model.Review;
 import com.alexsei.itransition.model.User;
 import com.alexsei.itransition.model.UserReviewRating;
-import com.alexsei.itransition.service.ReviewService;
+import com.alexsei.itransition.service.ReviewServiceImpl;
 
-import com.alexsei.itransition.service.UserService;
+import com.alexsei.itransition.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/review")
 public class ReviewController {
 
     @Autowired
-    private ReviewService reviewService;
+    private ReviewServiceImpl reviewServiceImpl;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
 
     @GetMapping("/create")
@@ -38,22 +35,21 @@ public class ReviewController {
 
     @PostMapping("/create")
     public String createReview(Model model, @ModelAttribute Review review, Authentication authentication) throws IOException {
-        reviewService.createReview(review,authentication);
+        reviewServiceImpl.createReview(review,authentication);
         return "redirect:/profile";
     }
 
     @GetMapping("/show/{id}")
     public String getShowReviewPage(@PathVariable("id") Long id, Model model, Authentication authentication){
-        Review review = reviewService.getReviewById(id);
-        User user = userService.getUserById(review.getUserId());
+        Review review = reviewServiceImpl.getReviewById(id);
+        User user = userServiceImpl.getUserById(review.getUserId());
         if(authentication!=null){
-            User authUser = userService.getUserByAuthentication(authentication);
+            User authUser = userServiceImpl.getUserByAuthentication(authentication);
             model.addAttribute("authUserId",authUser.getId());
             model.addAttribute("userReviewRating",new UserReviewRating());
 
         }
         List<Image> images = review.getImages();
-
         model.addAttribute("imagesUrls",images);
         model.addAttribute("review",review);
         model.addAttribute("user",user);
@@ -62,14 +58,14 @@ public class ReviewController {
 
     @GetMapping("/edit/{id}")
     public String getEditReviewPage(@PathVariable("id") Long reviewId, Model model){
-        Review review = reviewService.getReviewById(reviewId);
+        Review review = reviewServiceImpl.getReviewById(reviewId);
         model.addAttribute("review",review);
         return "editReviewPage";
     }
 
     @PostMapping("/update")
     public String updateReview(@ModelAttribute Review review){
-        reviewService.updateReview(review);
+        reviewServiceImpl.updateReview(review);
         return "redirect:/profile";
     }
 

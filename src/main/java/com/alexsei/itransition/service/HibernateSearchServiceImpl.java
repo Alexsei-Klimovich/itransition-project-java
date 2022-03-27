@@ -1,11 +1,11 @@
 package com.alexsei.itransition.service;
 
 import com.alexsei.itransition.model.Review;
+import com.alexsei.itransition.service.interfaces.HibernateSearchService;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,23 +14,16 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
-public class HibernateSearchService {
-
-
+public class HibernateSearchServiceImpl implements HibernateSearchService {
 
     private final EntityManager centityManager;
 
-    public HibernateSearchService(EntityManager centityManager) {
+    public HibernateSearchServiceImpl(EntityManager centityManager) {
         this.centityManager = centityManager;
     }
 
-//
-//    public void initializeHibernateSearch() {
-//
-//
-//    }
-
     @Transactional
+    @Override
     public List<Review> fuzzySearch(String searchTerm) {
         try {
             FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(centityManager);

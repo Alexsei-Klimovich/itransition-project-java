@@ -18,5 +18,4 @@ public class LoginController {
     String logout(){
         return "redirect:/";
     }
-
 }

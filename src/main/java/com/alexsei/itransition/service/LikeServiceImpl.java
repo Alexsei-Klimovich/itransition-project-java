@@ -3,32 +3,35 @@ package com.alexsei.itransition.service;
 import com.alexsei.itransition.model.Like;
 import com.alexsei.itransition.model.Review;
 import com.alexsei.itransition.repository.LikeRepository;
+import com.alexsei.itransition.service.interfaces.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LikeService {
+public class LikeServiceImpl implements LikeService {
 
     @Autowired
     LikeRepository likeRepository;
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     @Autowired
-    ReviewService reviewService;
+    ReviewServiceImpl reviewServiceImpl;
 
+    @Override
     public void addLike(Long reviewId, Long authUserId){
         Like like = new Like();
         like.setReviewId(reviewId);
         like.setUserId(authUserId);
         if(!isLikeExists(reviewId,authUserId)){
-            Review review =  reviewService.getReviewById(reviewId);
-            userService.incrementTotalLikes(review.getUserId());
+            Review review =  reviewServiceImpl.getReviewById(reviewId);
+            userServiceImpl.incrementTotalLikes(review.getUserId());
             likeRepository.save(like);
         }
     }
 
+    @Override
     public boolean isLikeExists(Long reviewId, Long authUserId){
         if(likeRepository.findByUserIdAndAndReviewId(authUserId,reviewId)!=null){
             return true;
@@ -36,7 +39,4 @@ public class LikeService {
             return false;
         }
     }
-
-
-
 }

@@ -5,7 +5,7 @@ import com.alexsei.itransition.model.Role;
 import com.alexsei.itransition.model.User;
 import com.alexsei.itransition.repository.RoleRepository;
 import com.alexsei.itransition.repository.UserRepository;
-import com.alexsei.itransition.service.UserService;
+import com.alexsei.itransition.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -15,17 +15,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.http.HttpClient;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
 @Component
 public class OAuthLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     @Autowired
     UserRepository userRepository;
@@ -43,7 +39,7 @@ public class OAuthLoginSuccessHandler extends SavedRequestAwareAuthenticationSuc
         User userFromDb = userRepository.getUserByEmail(email);
 
         if(userFromDb!=null){
-            userService.updateAuthenticationType(email,oauth2ClientName);
+            userServiceImpl.updateAuthenticationType(email,oauth2ClientName);
             if(!userFromDb.isEnabled()){
                 authentication.setAuthenticated(false);
             }
@@ -56,10 +52,8 @@ public class OAuthLoginSuccessHandler extends SavedRequestAwareAuthenticationSuc
             newUser.addRole(roleUser);
             newUser.setTotalLikes(0L);
             newUser.setEnabled(true);
-            userService.saveUser(newUser);
+            userServiceImpl.saveUser(newUser);
         }
-
         super.onAuthenticationSuccess(request, response, authentication);
     }
-
 }

@@ -3,7 +3,7 @@ package com.alexsei.itransition.security.oauth;
 import com.alexsei.itransition.model.Role;
 import com.alexsei.itransition.model.User;
 import com.alexsei.itransition.repository.RoleRepository;
-import com.alexsei.itransition.service.UserService;
+import com.alexsei.itransition.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +17,7 @@ public class CustomOAuth2User implements OAuth2User {
     private User user;
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
     @Autowired
     RoleRepository roleRepository;
 
@@ -41,9 +41,6 @@ public class CustomOAuth2User implements OAuth2User {
         }
         else {
             Role role = roleRepository.findRoleByName("ROLE_USER");
-//            if(role.getName()==null){
-//                role.setName("ROLE_USER");
-//            }
             roles.add(role);
         }
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

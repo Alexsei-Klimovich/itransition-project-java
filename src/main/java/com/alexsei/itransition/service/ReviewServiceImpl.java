@@ -2,6 +2,7 @@ package com.alexsei.itransition.service;
 
 import com.alexsei.itransition.model.Review;
 import com.alexsei.itransition.repository.ReviewRepository;
+import com.alexsei.itransition.service.interfaces.ReviewService;
 import com.alexsei.itransition.util.MarkdownUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -9,50 +10,56 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 @Transactional
-public class ReviewService {
+public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
-    private CloudinaryService cloudinaryService;
+    private CloudinaryServiceImpl cloudinaryServiceImpl;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Override
     public List<Review> getLast20Reviews(){
         return reviewRepository.findFirst20ByOrderByIdDesc();
     }
+
+    @Override
     public List<Review> get20MostRated(){
         return reviewRepository.findFirst20ByOrderByUserRating();
     }
 
+    @Override
     public void createReview(Review review,Authentication authentication) throws IOException {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String formatDateTime = now.format(formatter);
         review.setCreatingTime(formatDateTime);
         review.setHtml(MarkdownUtil.markdownToHtml(review.getText()));
-        review.setUserId(userService.getUserByAuthentication(authentication).getId());
+        review.setUserId(userServiceImpl.getUserByAuthentication(authentication).getId());
         reviewRepository.save(review);
-        cloudinaryService.saveImages(review);
+        cloudinaryServiceImpl.saveImages(review);
     }
 
+    @Override
     public List<Review> getReviewsByUserId(Long userId){
         return reviewRepository.getReviewsByUserId(userId);
     }
 
+    @Override
     public Review getReviewById(Long id){
         return reviewRepository.getById(id);
     }
 
+    @Override
     public void updateReview(Review review){
         Review oldReview = reviewRepository.getById(review.getId());
         review.setCreatingTime(oldReview.getCreatingTime());
@@ -61,12 +68,14 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
+    @Override
     public void incrementTotalUserRated(Long reviewId){
         Review reviewFromDb=reviewRepository.getById(reviewId);
         reviewFromDb.setTotalUsersRated(reviewFromDb.getTotalUsersRated()+1);
         reviewRepository.save(reviewFromDb);
     }
 
+    @Override
     public void updateUserRating(double userRating,Long reviewId){
         Review reviewFromDb = reviewRepository.getById(reviewId);
         double averageRating= reviewFromDb.getUserRating()*reviewFromDb.getTotalUsersRated();
@@ -77,8 +86,8 @@ public class ReviewService {
 
     }
 
+    @Override
     public void saveReview(Review review){
         reviewRepository.save(review);
     }
-
 }

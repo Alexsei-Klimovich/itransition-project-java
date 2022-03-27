@@ -21,5 +21,4 @@ public class UserReviewRating {
 
     @Column(name = "user_id")
     private Long userId;
-
 }

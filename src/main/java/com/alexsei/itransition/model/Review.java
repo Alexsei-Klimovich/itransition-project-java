@@ -60,5 +60,4 @@ public class Review {
     public void addImage(Image image){
         images.add(image);
     }
-
 }
