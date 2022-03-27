@@ -1,6 +1,7 @@
 package com.alexsei.itransition.controller;
 
 import com.alexsei.itransition.model.Review;
+import com.alexsei.itransition.repository.ReviewRepository;
 import com.alexsei.itransition.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,16 +13,16 @@ import java.util.List;
 
 @Controller
 public class MainPageController {
+
     @Autowired
     private ReviewService reviewService;
 
     @GetMapping("/")
     String getMainPage(Model model){
-        List<Review> reviews = reviewService.getLast5Reviews();
-        model.addAttribute("last5Reviews",reviews);
-
+        List<Review> reviews = reviewService.getLast20Reviews();
+        model.addAttribute("last20Reviews",reviews);
+        List<Review> mostRated = reviewService.get20MostRated();
+        model.addAttribute("mostRated",mostRated);
         return "mainPage";
     }
-
-
 }

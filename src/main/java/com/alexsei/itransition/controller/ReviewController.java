@@ -3,6 +3,7 @@ package com.alexsei.itransition.controller;
 import com.alexsei.itransition.model.Image;
 import com.alexsei.itransition.model.Review;
 import com.alexsei.itransition.model.User;
+import com.alexsei.itransition.model.UserReviewRating;
 import com.alexsei.itransition.service.ReviewService;
 
 import com.alexsei.itransition.service.UserService;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/review")
@@ -40,10 +43,17 @@ public class ReviewController {
     }
 
     @GetMapping("/show/{id}")
-    public String getShowReviewPage(@PathVariable("id") Long id, Model model){
+    public String getShowReviewPage(@PathVariable("id") Long id, Model model, Authentication authentication){
         Review review = reviewService.getReviewById(id);
         User user = userService.getUserById(review.getUserId());
+        if(authentication!=null){
+            User authUser = userService.getUserByAuthentication(authentication);
+            model.addAttribute("authUserId",authUser.getId());
+            model.addAttribute("userReviewRating",new UserReviewRating());
+
+        }
         List<Image> images = review.getImages();
+
         model.addAttribute("imagesUrls",images);
         model.addAttribute("review",review);
         model.addAttribute("user",user);
@@ -51,8 +61,8 @@ public class ReviewController {
     }
 
     @GetMapping("/edit/{id}")
-    public String getEditReviewPage(@PathVariable("id") Long id, Model model){
-        Review review = reviewService.getReviewById(id);
+    public String getEditReviewPage(@PathVariable("id") Long reviewId, Model model){
+        Review review = reviewService.getReviewById(reviewId);
         model.addAttribute("review",review);
         return "editReviewPage";
     }

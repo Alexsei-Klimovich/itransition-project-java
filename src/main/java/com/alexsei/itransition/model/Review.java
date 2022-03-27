@@ -51,8 +51,11 @@ public class Review {
     @Column(name = "user_rating")
     private double userRating=0;
 
+    @Column(name = "total_users_rated")
+    private Long totalUsersRated=0L;
+
     @Column(name="creating_time")
-    private LocalDateTime creatingTime;
+    private String creatingTime;
 
     public void addImage(Image image){
         images.add(image);
