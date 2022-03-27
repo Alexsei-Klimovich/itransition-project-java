@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.http.HttpClient;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -39,18 +40,21 @@ public class OAuthLoginSuccessHandler extends SavedRequestAwareAuthenticationSuc
         String oauth2ClientName = oauth2User.getOauth2ClientName();
         String username = oauth2User.getName();
         String email = oauth2User.getEmail();
-
-
         User userFromDb = userRepository.getUserByEmail(email);
 
         if(userFromDb!=null){
             userService.updateAuthenticationType(email,oauth2ClientName);
+            if(!userFromDb.isEnabled()){
+                authentication.setAuthenticated(false);
+            }
         } else{
             User newUser = new User();
             newUser.setUsername(username);
             newUser.setAuthType(AuthenticationType.valueOf(oauth2ClientName.toUpperCase(Locale.ROOT)));
             newUser.setEmail(email);
-            newUser.addRole(new Role());
+            Role roleUser = roleRepository.findRoleByName("ROLE_USER");
+            newUser.addRole(roleUser);
+            newUser.setTotalLikes(0L);
             newUser.setEnabled(true);
             userService.saveUser(newUser);
         }
