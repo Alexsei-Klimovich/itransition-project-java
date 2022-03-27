@@ -9,6 +9,7 @@
                 <button class="btn btn-outline-success" type="submit">Search</button>
                 <div align="rigth">
                     <li sec:authorize="isAuthenticated()">
+                        <span sec:authentication="principal.authorities">[ROLE_ADMIN]</span>
                         <a href="/logout" th:href="@{/logout}">
                             <span class="navbar-link" aria-hidden="true"></span>
                             <a href="/profile" class="btn btn-outline-secondary btn-lg active" role="button" aria-pressed="true">My Profile</a>
