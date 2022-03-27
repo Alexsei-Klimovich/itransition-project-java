@@ -21,13 +21,16 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "total_likes")
+    private Long totalLikes;
+
     @Column(name = "user_name")
     private String username;
 
     @Column(name="enabled")
     private boolean enabled;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -39,9 +42,7 @@ public class User {
     @Column(name = "auth_type")
     private AuthenticationType authType;
 
-    public void addRole(Role role){
-        roles.add(role);
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
-
-
 }
