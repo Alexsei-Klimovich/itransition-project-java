@@ -22,13 +22,13 @@
             <div class="col" th:object="${user}">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <td class="align-middle" th:text="${user.username}"></td>
-                        <a class="btn btn-primary" th:href="@{/review/create}" role="button" th:text="#{createNewReview}"></a>
+                        <td th:text="${user.username}+' - total Likes: '+${user.totalLikes}"></td>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <a class="btn btn-primary" th:href="@{/review/create}" role="button" th:text="#{createNewReview}"></a>
     <div  class="card-body">
         <table id="example" class="table" style="width:100%">
             <thead>

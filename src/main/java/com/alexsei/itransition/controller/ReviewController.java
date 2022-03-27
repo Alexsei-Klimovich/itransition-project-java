@@ -1,5 +1,6 @@
 package com.alexsei.itransition.controller;
 
+import com.alexsei.itransition.exception.NoAccessException;
 import com.alexsei.itransition.model.Image;
 import com.alexsei.itransition.model.Review;
 import com.alexsei.itransition.model.User;
@@ -47,7 +48,6 @@ public class ReviewController {
             User authUser = userServiceImpl.getUserByAuthentication(authentication);
             model.addAttribute("authUserId",authUser.getId());
             model.addAttribute("userReviewRating",new UserReviewRating());
-
         }
         List<Image> images = review.getImages();
         model.addAttribute("imagesUrls",images);
@@ -57,10 +57,20 @@ public class ReviewController {
     }
 
     @GetMapping("/edit/{id}")
-    public String getEditReviewPage(@PathVariable("id") Long reviewId, Model model){
-        Review review = reviewServiceImpl.getReviewById(reviewId);
-        model.addAttribute("review",review);
-        return "editReviewPage";
+    public String getEditReviewPage(@PathVariable("id") Long reviewId, Model model,Authentication authentication){
+       if(reviewServiceImpl.isRealUser(reviewId,authentication)){
+           Review review = reviewServiceImpl.getReviewById(reviewId);
+           model.addAttribute("review",review);
+           return "editReviewPage";
+       } else {
+           throw new NoAccessException();
+       }
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteReview(@PathVariable("id") Long reviewId, Authentication authentication){
+        reviewServiceImpl.deleteReviewById(reviewId, authentication);
+        return "redirect:/profile";
     }
 
     @PostMapping("/update")

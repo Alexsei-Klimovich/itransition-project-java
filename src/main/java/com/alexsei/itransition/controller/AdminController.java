@@ -5,6 +5,7 @@ import com.alexsei.itransition.model.User;
 import com.alexsei.itransition.service.AdminServiceImpl;
 import com.alexsei.itransition.service.ReviewServiceImpl;
 import com.alexsei.itransition.service.UserServiceImpl;
+import org.jboss.logging.annotations.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +60,11 @@ public class AdminController {
         Review review = reviewServiceImpl.getReviewById(id);
         model.addAttribute("review",review);
         return "adminEditReviewPage";
+    }
+    @PostMapping("/review/delete/{id}")
+    public String getEditReviewPage(@PathVariable("id") Long reviewId){
+        adminServiceImpl.deleteReviewById(reviewId);
+        return "redirect:/admin";
     }
 
     @PostMapping("/updateReview")

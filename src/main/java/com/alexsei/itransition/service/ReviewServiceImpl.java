@@ -1,5 +1,6 @@
 package com.alexsei.itransition.service;
 
+import com.alexsei.itransition.exception.NoAccessException;
 import com.alexsei.itransition.model.Review;
 import com.alexsei.itransition.repository.ReviewRepository;
 import com.alexsei.itransition.service.interfaces.ReviewService;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -90,4 +92,21 @@ public class ReviewServiceImpl implements ReviewService {
     public void saveReview(Review review){
         reviewRepository.save(review);
     }
+
+
+
+    public void deleteReviewById(Long reviewId, Authentication authentication){
+        if(isRealUser(reviewId,authentication)){
+            reviewRepository.deleteById(reviewId);
+        }
+        else {
+            throw new NoAccessException();
+        }
+    }
+
+    public boolean isRealUser(Long reviewId, Authentication authentication){
+        Review reviewFromDb=getReviewById(reviewId);
+        return Objects.equals(reviewFromDb.getUserId(), userServiceImpl.getUserByAuthentication(authentication).getId());
+    }
 }
+

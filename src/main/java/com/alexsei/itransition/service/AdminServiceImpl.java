@@ -2,6 +2,7 @@ package com.alexsei.itransition.service;
 
 import com.alexsei.itransition.model.Review;
 import com.alexsei.itransition.model.User;
+import com.alexsei.itransition.repository.ReviewRepository;
 import com.alexsei.itransition.service.interfaces.AdminService;
 import com.alexsei.itransition.util.MarkdownUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     ReviewServiceImpl reviewServiceImpl;
+
+    @Autowired
+    ReviewRepository reviewRepository;
 
     @Autowired
     CloudinaryServiceImpl cloudinaryServiceImpl;
@@ -39,5 +43,9 @@ public class AdminServiceImpl implements AdminService {
         review.setUserId(userId);
         reviewServiceImpl.saveReview(review);
         cloudinaryServiceImpl.saveImages(review);
+    }
+
+    public void deleteReviewById(Long reviewId){
+        reviewRepository.deleteById(reviewId);
     }
 }

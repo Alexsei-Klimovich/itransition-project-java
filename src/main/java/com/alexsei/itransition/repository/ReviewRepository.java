@@ -12,8 +12,8 @@ import java.util.List;
 @Transactional
 public interface ReviewRepository extends JpaRepository<Review,Long> {
     List<Review> findFirst20ByOrderByIdDesc();
+
     List<Review> getReviewsByUserId(Long userId);
+
     List<Review> findFirst20ByOrderByUserRating();
-
-
 }
