@@ -1,0 +1,74 @@
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
+
+</head>
+
+<body>
+<div th:insert="fragments/header :: header">...</div>
+<div class="container my-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col" th:object="${user}">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <td class="align-middle" th:text="${user.username}"></td>
+                        <a class="btn btn-primary" th:href="@{'/admin/review/create/'+${user.id}}"  role="button">Create New Review</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  class="card-body">
+        <table id="example" class="table" style="width:100%">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Group</th>
+                <th>Creator rating</th>
+                <th>Creation time</th>
+                <th>Tools</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="review : ${usersReviews}">
+                <td class="align-middle" th:text="${review.name}"></td>
+                <td class="align-middle" th:text="${review.group}"></td>
+                <td class="align-middle" th:text="${review.creatorRating}"></td>
+                <td class="align-middle" th:text="${review.creatingTime}"></td>
+                <td class="align-middle">
+                    <a class="btn btn-primary" th:href="@{'/review/show/'+${review.id}}" role="button">Show</a>
+                    <a class="btn btn-primary" th:href="@{'/admin/review/edit/'+${review.id}}" role="button">Edit</a>
+                    <a class="btn btn-danger" th:href="@{'/review/delete/'+${review.id}}" role="button">Delete</a>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div th:insert="fragments/footer :: footer">...</div>
+
+<script>
+
+    $(document).ready(function() {
+        $('#example').DataTable({
+            'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': [-1]
+            }]
+        });
+    })
+</script>
+</body>
+</html>
+

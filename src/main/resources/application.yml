@@ -1,12 +1,12 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://ec2-52-214-125-106.eu-west-1.compute.amazonaws.com:5432/darj3s6rhgak0
-    username: kfoxoogtvalmvf
-    password: 772d8c99d1ca51684de1a2cf69c5343d3e1cf1533a5bcec591e3f3d76c6a2fd9
-  #    url: jdbc:postgresql://localhost:5432/course
-  #    username: user1
-  #    password: password
+#    url: jdbc:postgresql://ec2-52-214-125-106.eu-west-1.compute.amazonaws.com:5432/darj3s6rhgak0
+#    username: kfoxoogtvalmvf
+#    password: 772d8c99d1ca51684de1a2cf69c5343d3e1cf1533a5bcec591e3f3d76c6a2fd9
+    url: jdbc:postgresql://localhost:5432/course
+    username: user1
+    password: password
   jpa:
     show-sql: true
     hibernate:
@@ -40,4 +40,3 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 10MB
-
