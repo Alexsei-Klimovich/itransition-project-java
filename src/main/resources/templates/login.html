@@ -14,7 +14,7 @@
 <div class="container my-3">
     <div class="container px-4 w-25">
         <div class="container">
-            <h1 align="center">Login with</h1>
+            <h1 align="center" th:text="#{loginWith}"></h1>
             <a class="btn btn-secondary btn-lg btn-block" role="button" th:href="@{/oauth2/authorization/google}">GOOGLE</a>
             <a class="btn btn-secondary btn-lg btn-block" role="button" th:href="@{/oauth2/authorization/facebook}">FACEBOOK</a>
         </div>

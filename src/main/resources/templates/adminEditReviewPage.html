@@ -23,14 +23,14 @@
     <form th:action="@{/admin/updateReview}" th:object="${review}" method="post" enctype="multipart/form-data">
         <div class="form-row">
             <div class="col-md-12 form-group">
-                <label>Label:</label>
+                <label th:text="#{label}"></label>
                 <input type="text" required="required" class="form-control" th:field="*{name}">
             </div>
             <div >
                 <input type="hidden" th:field="*{id}">
             </div>
             <div class="col-md-12 form-group">
-                <label>Group:</label>
+                <label th:text="#{group}"></label>
                 <select th:field="*{group}"  class="browser-default custom-select">
                     <option value="films">Films</option>
                     <option value="books">Books</option>
@@ -38,18 +38,18 @@
                 </select>
             </div>
             <div class="col-md-12 form-group">
-                <label>Content:</label>
+                <label th:text="#{content}"></label>
                 <textarea  type="text" rows="4" id="content" placeholder="Content" class="form-control"
                            th:field="*{text}" autocomplete="off"></textarea>
             </div>
             <div class="col-md-12 form-group">
                 </br></br></br></br>
-                <label class="control-label">Rate:</label>
+                <label class="control-label" th:text="#{rate}"></label>
                 <input required="required" th:field="*{creatorRating}" class="rating rating-loading" data-min="0"
                        data-max="5" data-step="0.1">
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">Update</button>
+        <button class="btn btn-primary" type="submit" th:text="#{update}"></button>
     </form>
 </div>
 <div th:insert="fragments/footer :: footer">...</div>

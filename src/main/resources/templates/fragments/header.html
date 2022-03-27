@@ -3,22 +3,25 @@
 <div th:fragment="header">
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{/}">Itransition</a>
+            <a class="navbar-brand"  th:href="@{/}">Itransition</a>
             <form  th:action="@{/search}" class="form-inline">
+                <div>
+                    <a href="/?lang=en" >En</a>
+                    <a href="/?lang=ru" >Ru</a>
+                </div>
                 <input class="form-control me-2" th:name="search" required="required" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <button class="btn btn-outline-success" type="submit" th:text="#{search}"></button>
                 <div align="rigth">
                     <li sec:authorize="isAuthenticated()">
-                        <span sec:authentication="principal.authorities">[ROLE_ADMIN]</span>
                         <a href="/logout" th:href="@{/logout}">
                             <span class="navbar-link" aria-hidden="true"></span>
-                            <a href="/profile" class="btn btn-outline-secondary btn-lg active" role="button" aria-pressed="true">My Profile</a>
-                            <a href="/logout" class="btn btn-outline-secondary btn-lg active" role="button" aria-pressed="true">Logout</a>
+                            <a href="/profile" class="btn btn-outline-secondary btn-lg active" role="button" aria-pressed="true" th:text="#{myprofile}"></a>
+                            <a href="/logout" class="btn btn-outline-secondary btn-lg active" role="button" aria-pressed="true" th:text="#{logout}"></a>
                         </a>
                     </li>
                     <li sec:authorize="!isAuthenticated()">
                         <span class="navbar-link" aria-hidden="true"></span>
-                        <a href="/loginsocial" class="btn  btn-outline-secondary btn-lg active" role="button" aria-pressed="true">Login</a>
+                        <a href="/loginsocial" class="btn  btn-outline-secondary btn-lg active" role="button" aria-pressed="true" th:text="#{login}"></a>
                     </li>
                 </div>
             </form>

@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     driver-class-name: org.postgresql.Driver
 #    url: jdbc:postgresql://ec2-52-214-125-106.eu-west-1.compute.amazonaws.com:5432/darj3s6rhgak0

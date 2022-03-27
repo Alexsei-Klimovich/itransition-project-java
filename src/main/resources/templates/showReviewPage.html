@@ -2,7 +2,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
 
 <head>
-    <title>Review</title>
+    <title>review</title>
     <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -27,24 +27,24 @@
 
         <table class="table">
             <tr>
-                <td>Creator:</td>
+                <td th:text="#{creator}"></td>
                 <td th:text="*{user.username}+'- total Likes: '+*{user.totalLikes}"></td>
             </tr>
 
             <tr>
-                <td>Creator rating:</td>
+                <td th:text="#{creatorRating}"></td>
                 <td th:text="${review.creatorRating}"></td>
             </tr>
             <tr>
-                <td>Avarage user rating:</td>
+                <td th:text="#{userAverageRating}"></td>
                 <td th:text="*{review.userRating}"></td>
             </tr>
             <tr>
-                <td>Group:</td>
+                <td th:text="#{group}"></td>
                 <td th:text="${review.group}"></td>
             </tr>
             <tr>
-                <td>Publish time:</td>
+                <td th:text="#{creationTime}"></td>
                 <td th:text="${review.creatingTime}"></td>
             </tr>
         </table>
@@ -65,12 +65,12 @@
     </div>
     <div sec:authorize="isAuthenticated()">
         <form th:action="@{'/like/add/'+${review.id}+'/'+${authUserId}}" method="post">
-            <button class="btn btn-primary" type="submit">Add Like</button>
+            <button class="btn btn-primary" type="submit" th:text="#{like}"></button>
         </form>
         <form th:action="@{'/rating/add/'+${review.id}+'/'+${authUserId}}" th:object="${userReviewRating}" method="post">
             <input required="required" th:field="*{userRating}" class="rating rating-loading" data-min="0"
                    data-max="5" data-step="0.1">
-            <button class="btn btn-primary" type="submit">RATE THIS</button>
+            <button class="btn btn-primary" type="submit" th:text="#{rateThis}"></button>
         </form>
     </div>
 
